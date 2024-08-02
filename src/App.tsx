@@ -1,10 +1,35 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
+
+  useEffect(() => {
+    console.log("useEffect start")
+    const fetchData = async () => {
+      console.log("---------- async ------------ fetchData start")
+      const res = await fetch('https://jsonplaceholder.typicode.com/todos/1');
+      console.log("---------- async ------------ fetch return")
+      const id = (await res.json())["id"]
+      console.log("---------- async ------------ get id", id)
+      console.log("---------- async ------------ call setCount, current count is", count)
+      setCount(prev =>
+        prev + id
+      );
+      console.log("---------- async ------------ setCount end")
+      console.log("---------- async ------------ fetchData end")
+    };
+    fetchData();
+    console.log("useEffect end")
+  }, []);
+
+  useEffect(() => {
+    console.log("count updated, current count is", count)
+  }, [count])
+
+  console.log("App rendering...")
 
   return (
     <>
